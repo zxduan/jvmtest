@@ -8,6 +8,8 @@ import java.util.Date;
 public class OnStackTest {
     /*
     * 栈上分配
+    * -XX:+PrintGCTimestamps
+    *
     *-Xlog:gc* -Xmx10M -Xms10M -XX:+DoEscapeAnalysis
     * -XX:-DoEscapeAnalysis
     *
