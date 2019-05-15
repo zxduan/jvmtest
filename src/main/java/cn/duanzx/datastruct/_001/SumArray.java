@@ -13,8 +13,30 @@ public class SumArray {
     @Test
     public void test(){
         int[] arr = new int[]{1,2,3,4,5};
-        System.out.println(sum(arr,arr.length));
+//        System.out.println(sum(arr,arr.length));
         System.out.println(sum(arr));
+        System.out.println(sumMid(arr,0,arr.length-1));
+    }
+
+    /**使用二分递归对数组求和
+     * 1 2 3 4 5 6 7
+     * 将求解一个数组的和分成求解两个数组的和
+     * arr = arr1 + arr2
+     * arr1 = arr11 + arr12
+     * arr2 = arr21 + arr22
+     * 递归基：子数组不可再分即数组长度是1
+     * 1 2 3 4 5
+     * 12      3 4 5
+     * 1 2     3  4 5
+     * 1   2   3   4  5
+     *
+     * */
+    public int sumMid(int[] arr , int lo , int hi){
+        if (lo == hi) {
+            return arr[lo];
+        }
+        int mi = (lo+hi) >> 1;
+        return sumMid(arr,lo,mi) + sumMid(arr,mi+1,hi);
     }
 
     public int sum(int[] arr,int n){
