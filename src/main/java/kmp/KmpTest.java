@@ -2,6 +2,26 @@ package kmp;
 
 public class KmpTest {
 
+    public static void main(String[] args)throws Exception{
+        int[][] ages = new int[4][7];
+        System.out.println(ages.length);
+        int[] arr = new int[]{1,2,3};
+        updateArr(arr);
+        System.out.println(arr[0]);
+        //最终打印-1
+        System.out.println("H".concat("b"));
+    }
+
+    public static void updateArr(int[] arr){
+        arr[0] = -1;
+        arr = new int[]{4,5,6};//更改了arr的引用地址，arr元素不变
+        arr[0] = 8;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
     /***
      * 求字符串在母串中的位置
      * abcdefghijklmn
