@@ -22,12 +22,12 @@ public class LongestSub {
         String s1 = "educational";
         String s2 = "advantage";
         //data
-        s1 = "didactical";
-        s2 = "advantage";
+//        s1 = "didactical";
+//        s2 = "advantage";
         //blog
-        s1 = "cnblogs";
-        s2 = "belong";
-        System.out.println(longetsSubstring3(s1, s2));
+//        s1 = "cnblogs";
+//        s2 = "belong";
+        System.out.println(longestSubstring4(s1, s2));
     }
 
     /**
@@ -99,6 +99,52 @@ public class LongestSub {
         return result[m - 1][n - 1];
     }
 
+    public String longestSubstring4(String s1, String s2) {
+        String subString = "";
+        if (s1.length() < s2.length()) {
+            String temp = s1;
+            s1 = s2;
+            s2 = temp;
+        }
+        for (int x = 0; x < s1.length(); x++) {
+            StringBuffer sub = new StringBuffer();
+            int i = x;
+            int j = -1;
+            int next = -1;
+            for (int y=0;y < s2.length();y++) {
+                if (s1.charAt(x) == s2.charAt(y)) {
+                    j = y;
+                    break;
+                }
+            }
+            if (j < 0) {
+                sub.append(s1.charAt(i));
+                subString = subString.length() < sub.length() ? sub.toString() : subString;
+                continue;
+            }
+            while (i < s1.length()) {
+                //如果 arr1[i]和arr2[j]之后的所有元素都不匹配
+                if (j == s2.length()) {
+                    i++;
+                    j = next;
+                    continue;
+                }
+                if (s1.charAt(i) == s2.charAt(j)) {
+                    sub.append(s1.charAt(i));
+                    i++;
+                    j++;
+                    next = j;
+                    continue;
+                }
+                if (s1.charAt(i) != s2.charAt(j)) {
+                    j++;
+                }
+            }
+            subString = subString.length() < sub.length() ? sub.toString() : subString;
+        }
+        return subString;
+    }
+
 
     public String longestSubstring1(String s1, String s2) {
         String subString = "";
@@ -109,7 +155,7 @@ public class LongestSub {
         }
         char[] arr1 = s1.toCharArray();
         char[] arr2 = s2.toCharArray();
-        for (int x = arr1.length; x > 1; x--) {
+        for (int x = arr1.length; x > 0; x--) {
             char start = arr1[x - 1];
             StringBuffer sub = new StringBuffer();
             //首先判断first字符是否存在S2字符串中
