@@ -91,6 +91,51 @@ public class Max2Array {
      * 将一个大的数组，分成若干个子数组
      * 直到子数组不能再分为止（数组长度为3或4）
      */
+    @Test
+    public void testMax2Array3() {
+        int[] arr = new int[22];
+        for(int i = 1;i<12;i++){
+            arr[i-1] = i;
+        }
+        int[] result = max2Array3(arr,0,arr.length-1);
+        System.out.println(String.format("最大的两个数：%d,%d", result[0], result[1]));
+    }
+
+    public int[] max2Array3(int[] arr, int lo, int hi) {
+        if (hi - lo == 2 || hi - lo == 3) {
+            int l1 = (hi - lo == 2)?Integer.MIN_VALUE:arr[lo];
+            int l2 = (hi - lo == 2)?arr[lo]:arr[lo + 1];
+            int r1 = arr[hi - 1], r2 = arr[hi];
+            //始终保证 l1 < l2  ,  r1 < r2
+            if (l2 < l1) {
+                int temp = l1;
+                l1 = l2;
+                l2 = temp;
+            }
+            if (r2 < r1) {
+                int temp = r1;
+                r1 = r2;
+                r2 = temp;
+            }
+            if (l2 < r2) { //l1 < l2 < r2
+                return new int[]{r2,(l2 < r1 ? r1 : l2)};
+            } else { // l1 < l2 ,  l2 > r2
+                return new int[]{l2,(l1 < r2 ? r2 : l1)};
+            }
+        }
+        int mi = (lo + hi) >> 1;
+        int[] leftArr = max2Array3(arr,lo,mi);
+        int[] rightArr = max2Array3(arr,mi+1,hi);
+        int l1 = leftArr[1],l2 = leftArr[0];//l1 < l2
+        int r1 = rightArr[1],r2 = rightArr[0]; // r1 < r2
+        if(l2 < r2){
+            return new int[]{r2,(l2 < r1?r1:l2)};
+        }else {
+            return new int[]{l2,(r2 < l1?l1:r2)};
+        }
+    }
+
+
     //求解数组长度是3
     @Test
     public void testArray3() {
@@ -112,28 +157,55 @@ public class Max2Array {
             System.out.println(String.format("最大的两个数：%d,%d", x2, x1));
         }
     }
+
     //求解数组长度是4
-    public void testArray4(){
-        int[] arr = new int[]{1, 2, 3,4};
-        int lo = 0, hi = 2;
-        int l1 = arr[lo],l2 = arr[lo+1],r1 = arr[hi-1],r2 = arr[hi];
-        //保证l1 < r1
-        if(r1 < l1){
+    @Test
+    public void testArray4() {
+        int[] arr = new int[]{1, 2, 3, 4};
+        int lo = 0, hi = arr.length - 1;
+        int result1, result2;
+        int l1 = arr[lo], l2 = arr[lo + 1], r1 = arr[hi - 1], r2 = arr[hi];
+        //始终保证 l1 < l2  ,  r1 < r2
+        if (l2 < l1) {
+            int temp = l1;
+            l1 = l2;
+            l2 = temp;
+        }
+        if (r2 < r1) {
             int temp = r1;
-            r1 = l1;
-            l1 = temp;
+            r1 = r2;
+            r2 = temp;
         }
-        if(r1 < r2){
-            if(l){
-
-            }
+        if (l2 < r2) { //l1 < l2 < r2
+            result1 = r2;
+            result2 = l2 < r1 ? r1 : l2;
+        } else { // l1 < l2 ,  l2 > r2
+            result1 = l2;
+            result2 = l1 < r2 ? r2 : l1;
         }
-
-
+        System.out.println(String.format("最大的两个数：%d,%d", result1, result2));
     }
 
-    public void testArray34(){
-
+    @Test
+    public void testArray3From4() {
+        int[] arr = new int[]{1, 2, 3};
+        int lo = 0, hi = arr.length - 1;
+        int result1, result2;
+        int l1 = Integer.MIN_VALUE, l2 = arr[lo], r1 = arr[hi - 1], r2 = arr[hi];
+        //始终保证 l1 < l2  ,  r1 < r2
+        if (r2 < r1) {
+            int temp = r1;
+            r1 = r2;
+            r2 = temp;
+        }
+        if (l2 < r2) { //l1 < l2 < r2
+            result1 = r2;
+            result2 = l2 < r1 ? r1 : l2;
+        } else { // l1 < l2 ,  l2 > r2
+            result1 = l2;
+            result2 = l1 < r2 ? r2 : l1;
+        }
+        System.out.println(String.format("最大的两个数：%d,%d", result1, result2));
     }
 
 }
