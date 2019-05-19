@@ -18,16 +18,86 @@ public class LongestSub {
 
     @Test
     public void test() {
+        //dana
         String s1 = "educational";
         String s2 = "advantage";
+        //data
         s1 = "didactical";
         s2 = "advantage";
-        System.out.println(longestSubstring(s1, s2));
+        //blog
+        s1 = "cnblogs";
+        s2 = "belong";
+        System.out.println(longetsSubstring3(s1, s2));
     }
 
     /**
-     * 采用递归+分治
+     * 采用递归
+     * 分别从S1 S2 的末尾元素比较，如果有相同的则提取，没有相同的则将规模递减
+     * 设S1 S2的末尾元素位置分别为 index1 index2
+     * 若S1 S2末尾元素相同则： index1--,index2--
+     * 若S1 S2末尾元素不同则有两种情况
+     * index1保证不变， index2 -1
+     * index2保持不变，index1 - 1
+     * 效率非常低
      */
+    public String longestSubstring2(String s1, String s2, int index1, int index2, String subString) {
+        if (index1 < 0 || index2 < 0) {
+            return subString;
+        }
+        if (s1.charAt(index1) == s1.charAt(index2)) {
+            subString += s1.charAt(index1);
+            return longestSubstring2(s1, s2, index1--, index2--, subString);
+        }
+        String result1 = longestSubstring2(s1, s2, index1, index2--, subString);
+        String result2 = longestSubstring2(s1, s2, index1--, index2, subString);
+        if (result1.length() < result2.length()) {
+            subString += result2;
+        } else {
+            subString += result1;
+        }
+        return subString;
+    }
+
+    /**
+     * 采用动态规划（记忆法+迭代）
+     * 将自顶向下的操作，改为自底向上
+     * 每一次比较后，有两种情况：
+     * 相等：index1,index2同时递减
+     * 不相等：
+     * index1 递减 或 index2递减
+     */
+    public String longetsSubstring3(String s1, String s2) {
+        int m = s1.length(), n = s2.length();
+        String[][] result = new String[m][n];
+        for (int i = 0; i < m; i++) {
+            if (s2.charAt(0) == s1.charAt(i)) {
+                result[i][0] = s2.charAt(0) + "";
+            } else {
+                result[i][0] = "";
+            }
+        }
+        for (int j = 0; j < n; j++) {
+            if (s1.charAt(0) == s2.charAt(j)) {
+                result[0][j] = s1.charAt(0) + "";
+            } else {
+                result[0][j] = "";
+            }
+        }
+        for (int i = 1; i < m; i++) {
+            //得到s1中的所有元素
+            for (int j = 1; j < n; j++) {
+                if (s1.charAt(i) == s2.charAt(j)) {
+                    //上一个匹配成功的字符串+ 当前匹配成功的字符串
+                    result[i][j] = result[i - 1][j - 1] + s1.charAt(i);
+                    continue;
+                }
+                String r1 = result[i][j - 1];
+                String r2 = result[i - 1][j];
+                result[i][j] = r1.length() < r2.length() ? r2 : r1;
+            }
+        }
+        return result[m - 1][n - 1];
+    }
 
 
     public String longestSubstring1(String s1, String s2) {
@@ -138,20 +208,16 @@ public class LongestSub {
                 subString = sub.toString();
             }
         }
+
+        return reverstString(subString);
+    }
+
+    public String reverstString(String subString) {
         StringBuffer result = new StringBuffer();
         for (int i = subString.length(); i > 0; i--) {
             result.append(subString.charAt(i - 1));
         }
         return result.toString();
-    }
-
-    public void reverstString(char[] arr, int lo, int hi) {
-        if (lo < hi) {
-            char temp = arr[lo];
-            arr[lo] = arr[hi];
-            arr[hi] = temp;
-            reverstString(arr, ++lo, --hi);
-        }
     }
 
 }
