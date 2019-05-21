@@ -8,4 +8,13 @@ package cn.duanzx.datastruct._002_1;
  * 比较二者的时间复杂度
  */
 public class CopyFrom {
+
+    /**
+     * 定义一个内部类，代表Vector数据结构
+     */
+    class MyVector<T> {
+        private int size;
+        private int capacity;
+        private T[] arr;
+    }
 }
