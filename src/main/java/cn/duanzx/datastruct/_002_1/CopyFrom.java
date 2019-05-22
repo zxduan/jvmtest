@@ -33,7 +33,7 @@ public class CopyFrom {
         //将传入参数arr[lo,hi)中的元素复制到内部变量arr中
         MyVector(Collection<? extends E> arr, int lo, int hi) {
             Object[] array = arr.toArray();
-            this.elementData = new Object[capacity = 2 * (hi - lo)];
+            this.elementData = new Object[capacity = (hi - lo) >> 1];
             this.size = 0;
             while (lo < hi) {
                 elementData[size++] = array[lo++];
@@ -42,6 +42,22 @@ public class CopyFrom {
 
         MyVector(Object[] arr, int lo, int hi, int increment) {
 
+        }
+
+        /**
+         * 扩容算法的实现：
+         * 当size > capacity时候，将capacity 扩大二倍
+         * 然后复制数组中原来存在的元素到新的数组中
+         */
+        public void expand() {
+            if (size < capacity) {
+                return;
+            }
+            Object[] newElementData = new Object[capacity >> 1];
+            for (int i = 0; i < size; i++) {
+                newElementData[i] = elementData[i];
+            }
+            elementData = newElementData;
         }
 
         public Object[] getElementData() {
@@ -85,7 +101,8 @@ public class CopyFrom {
      * size++
      * 当size=容量时候，扩容：容量= 当前容量*2
      * 当size = 1000时停止
-     * 当size为1000时需要 3 * 2^9 , 时间复杂度为O(n) , 分摊后，每次扩容成本O(1)
+     * 当size为1000时需要 3 * 2^9 ,
+     * 执行了n次，时间复杂度为O(n) , 分摊后，每次扩容成本O(1)
      */
     @Test
     public void testCopy2CapacityComplex() {
@@ -104,7 +121,9 @@ public class CopyFrom {
      * 当size = 1000时
      * capacity + increment * n = 1000
      * 每次耗时为：
-     * T 2T 3T ....(n-1)T , 时间复杂度为n^2 , 每次扩容的时间成本O(n)
+     * T 2T 3T ....(n-1)T ,
+     * 执行了 1， 2， 3， 4，。。。n
+     * 时间复杂度为n^2 , 每次扩容的时间成本O(n)
      */
     @Test
     public void testCopyIncrement() {
@@ -118,6 +137,12 @@ public class CopyFrom {
             }
         }
     }
+
+    /**
+     * 理解分摊复杂度
+     * 设算法执行6次，每次耗时分别为： 1 ，2， 3， 4， 5， 6
+     * 分摊复杂度为 （1 + 2 + 3 + 4 + 5 + 6）/6
+     * */
 
 
 }
