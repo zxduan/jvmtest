@@ -33,7 +33,8 @@ public class RemoveVector {
                 System.out.println("最后一个元素是：" + myVector.getElementData()[myVector.getSize() - 1]);
             }
         }
-        myVector.remove(2, 102);
+        int count = myVector.remove(2, 102);
+        System.out.println("删除了" + count + "个元素");
         int i = 0;
         for (Object obj : myVector.getElementData()) {
             System.out.println(obj);
