@@ -1,7 +1,7 @@
 package cn.duanzx.datastruct;
 
 import org.junit.Test;
-
+/**2019-05-27 zxduan加了一段注释*/
 public class BubbleSort {
     /***
      * 起泡排序
